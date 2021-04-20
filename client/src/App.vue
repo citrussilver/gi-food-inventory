@@ -5,7 +5,7 @@
         <span id="navspan">[WIP] Genshin Impact Food-Ingredients Inventory</span>
       </div>
     </nav>
-    <Food :foodsData="foodsData" v-on:update-qtys="updateOnHandQtys"/>
+    <Food :foodsData="foodsData" v-on:update-qtys="updateOnHandQtys" :key="randomKey"/>
     <footer class="footer footerspan">
       <div class="content has-text-centered">
         <p>2020 GI Food-Ingredients Inventory</p>
@@ -26,7 +26,8 @@ export default {
   },
   data() {
     return {
-      foodsData: []
+      foodsData: [],
+      randomKey: 0
     }
   },
   async mounted() {
@@ -35,21 +36,26 @@ export default {
   },
   methods: {
     async updateOnHandQtys(objects){
-      // console.log("\nFood ID: " + objects.food_id + "\nOn Hand Qty passed: " + objects.onhandqty + "\nIngredient ID:" + objects.ingredient_id);
-      
-      const response = await axios.patch('api/foods/' + objects.ingredient_id, {
-        onHandQty : objects.onhandqty,
-        ingredientName: objects.ingredientName
-      });
-      toast({
-        message: 'Successfully updated ' + objects.ingredientName + ' quantity',
-        type: 'is-info',
-        position: "top-center",
-        dismissible: true,
-        pauseOnHover: true,
-        closeOnClick: true
-      })
-      console.log(response.data)
+      try {
+        
+        const response = await axios.patch('api/foods/' + objects.ingredient_id, {
+          onHandQty : objects.onhandqty,
+          ingredientName: objects.ingredientName
+        });
+        // console.log(`\nFood ID: ${objects.food_id} \nOn Hand Qty passed: ${objects.onhandqty} \nIngredient ID: ${objects.ingredient_id}`);
+        toast({
+          message: 'Successfully updated ' + objects.ingredientName + ' quantity',
+          type: 'is-info',
+          position: "top-center",
+          dismissible: true,
+          pauseOnHover: true,
+          closeOnClick: true
+        })
+        console.log(response.data)
+        this.randomKey++
+      } catch (error) {
+        console.log(error)
+      }
     }
   }
 }

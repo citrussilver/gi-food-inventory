@@ -23,7 +23,7 @@ router.patch('/:ingredientId', async(req, res) =>{
     try {
         const ingredient = await IngredientItem.updateOne({ _id: ingredientId }, { onHandQty: onHandQty })
         if (!ingredient.nModified) throw Error('Something went wrong ')
-        res.status(200).send("[Ingredients] Successfully updated " + ingredientName + " quantity.")
+        res.status(200).send(`[Ingredients] Successfully updated ${ingredientName} quantity.`)
     } catch (error) {
         res.status(500).json({ message: error.message })
     }

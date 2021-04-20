@@ -28,7 +28,7 @@
                         <div class="tile is-parent">
                             <article class="tile is-child box">
                             <p>Effect</p>
-                            <p><textarea class="textarea is-info has-fixed-size txtarea-custom" v-model="food.effect" disabled /></p>
+                            <p><textarea id="txtarea-custom" class="textarea is-info has-fixed-size" v-model="food.effect" disabled /></p>
                             </article>
                         </div>
                     </div>    
@@ -155,7 +155,7 @@ export default {
     box-shadow: 0 0 0 0.5em #007acc;
 }
 
-.txtarea-custom {
+#txtarea-custom {
     background: #323232;
     color: #fff;
     cursor: pointer;
