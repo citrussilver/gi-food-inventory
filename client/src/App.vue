@@ -2,7 +2,7 @@
   <div id="app">
     <nav class="navbar is-dark">
       <div class="navbar-brand">
-        <span id="navspan">[WIP] Genshin Impact Food-Ingredients Inventory</span>
+        <span id="navspan">&#91;WIP&#93; Genshin Impact Food-Ingredients Inventory</span>
       </div>
     </nav>
     <Food :foodsData="foodsData" v-on:update-qtys="updateOnHandQtys" :key="randomKey"/>
@@ -31,8 +31,12 @@ export default {
     }
   },
   async mounted() {
-    const response = await axios.get('api/foods/')
-    this.foodsData = response.data;
+    try {
+      const response = await axios.get('api/foods/')
+      this.foodsData = response.data;
+    } catch (error) {
+      console.error(error);
+    }
   },
   methods: {
     async updateOnHandQtys(objects){
