@@ -16,9 +16,9 @@
 </template>
 
 <script>
-import Food from './components/Food.vue'
 import axios from "axios"
 import { toast } from 'bulma-toast'
+import Food from './components/Food.vue'
 
 export default {
   components: {
