@@ -5,7 +5,10 @@
         <span id="navspan">&#91;WIP&#93; Genshin Impact Food-Ingredients Inventory</span>
       </div>
     </nav>
-    <Food :foodsData="foodsData" v-on:update-qtys="updateOnHandQtys" :key="randomKey"/>
+    <!-- <Food :foodsData="foodsData" v-on:update-qtys="updateOnHandQtys" :key="randomKey"/> -->
+    <div v-if="foodsData.length">
+      <FoodsList :foodsData="foodsData" @update-qtys="updateOnHandQtys" />
+    </div>
     <footer class="footer footerspan">
       <div class="content has-text-centered">
         <p>2020 GI Food-Ingredients Inventory</p>
@@ -16,13 +19,15 @@
 </template>
 
 <script>
-import Food from './components/Food.vue'
 import axios from "axios"
 import { toast } from 'bulma-toast'
+import Food from './components/Food.vue'
+import FoodsList from './components/FoodsList.vue'
 
 export default {
   components: {
-    Food
+    Food,
+    FoodsList
   },
   data() {
     return {
