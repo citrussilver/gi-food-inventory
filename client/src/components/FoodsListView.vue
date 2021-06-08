@@ -41,28 +41,23 @@
                                     <div class="ingredients-block">
                                         <p>Ingredients List:</p>
                                         <ul class="ingredients-list">
-                                            <li class="row" v-for="ingredient in food.ingredients" :key="ingredient._id">
-                                                <div id="ingredient-image-container">
+                                            <li class="grid-row" v-for="ingredient in food.ingredients" :key="ingredient._id">
+                                                <div id="ingredient-image">
                                                     <img class="image is-64x64" :src="require(`../assets/images/food_inv/${ingredient.imagePath}.png`)" alt="ingredient.ingredientName" :title="ingredient.ingredientName">
                                                 </div>
-                                                <div class="required-qty-container">
+                                                <div class="ingredient-name">
                                                     <!-- <i class="material-icons" id="required-inner-qty">food_bank</i> -->
                                                     <!-- Required:
                                                     {{ ingredient.requiredQty }} -->
                                                     {{ingredient.ingredientName}}
                                                 </div>
                                                 <div class="on-hand-qty-container">
-                                                    <p>On Hand:</p>
-                                                    <div class="qty-input-button">
-                                                        <div class="qty-input">
-                                                            <input v-if="ingredient.onHandQty < 1" class="input is-danger on-hand-input" type="number" v-model="ingredient.onHandQty" min="0">
-                                                            <input v-else class="input is-primary on-hand-input" type="number" v-model="ingredient.onHandQty" min="0">
-                                                        </div>
-                                                        <div class="qty-button">
-                                                            <!-- <button class="button is-primary save-button" @click="test({ingredient_id: ingredient._id, onhandqty: ingredient.onHandQty})"><i class="material-icons">save</i></button> -->
-                                                            <button class="button is-primary save-button" @click="$emit('update-qtys', { ingredient_id: ingredient._id, ingredientName: ingredient.ingredientName, onhandqty: ingredient.onHandQty})"><i class="material-icons">save</i></button>
-                                                        </div>
-                                                    </div>
+                                                    <input v-if="ingredient.onHandQty < 1" class="input is-danger on-hand-input" type="number" v-model="ingredient.onHandQty" min="0">
+                                                    <input v-else class="input is-primary on-hand-input" type="number" v-model="ingredient.onHandQty" min="0">
+                                                </div>
+                                                <div class="save-button">
+                                                    <!-- <button class="button is-primary save-button" @click="test({ingredient_id: ingredient._id, onhandqty: ingredient.onHandQty})"><i class="material-icons">save</i></button> -->
+                                                    <button class="button is-primary save-button" @click="$emit('update-qtys', { ingredient_id: ingredient._id, ingredientName: ingredient.ingredientName, onhandqty: ingredient.onHandQty})"><i class="material-icons">save</i></button>
                                                 </div>
                                             </li>
                                         </ul>
@@ -100,124 +95,3 @@ export default {
     }
 }
 </script>
-
-<style scoped>
-
-.tile {
-    background: #323232;
-    color: #fff;
-    padding: 0.30em;
-}
-
-.tile .count-label {
-    font-size: 20px;
-    text-align: center;
-}
-
-.tile .on-hand-input {
-    width: 5rem;
-}
-
-.tile .count-figure {
-    font-size: 40px;
-    text-align: center;
-}
-
-.tile #food-name {
-    text-align: center;
-    font-size: 20px;
-    padding: 0.5rem;
-}
-
-.tile #food-img {
-    text-align: center;
-}
-
-.food-item-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    margin: 4rem auto;
-    max-width: 95%;
-}
-
-.food-item-container > .food-block {
-    background: #323232;
-    max-width: 50rem;
-    margin: 4rem auto;
-    padding: 2rem;
-    border-radius: 3px;
-    box-shadow: 0 2px 0 rgba(230, 145, 56, 0.05), 0 5px 20px rgba(230, 145, 56, 0.5);
-    transition: all 100ms ease-in-out;
-}
-
-.food-block:hover {
-    box-shadow: 0 0 0 0.5em #007acc;
-}
-
-#txtarea-custom {
-    background: #323232;
-    color: #fff;
-    cursor: pointer;
-}
-
-.ingredients-block {
-    background: #323232;
-}
-
-.ingredients-block p {
-    padding: 0.1rem;
-}
-
-.ingredients-list {
-    background: #252526;
-    width: 100%;
-}
-
-.ingredients-list .row {
-    padding: 0.5em;
-    margin: 0%;
-    display: flex;
-    flex-direction: row;
-}
-
-.ingredients-list .row:hover {
-    background-color: #007acc;
-}
-
-.row #ingredient-image-container {
-    flex: 5%;
-    display: grid;
-}
-
-.row .required-qty-container {
-    flex: 5%; 
-}
-
-#required-qty p {
-    text-align: center; 
-}
-
-#required-inner-qty {
-    font-size: 5rem;
-}
-
-.row .on-hand-qty-container {
-    flex: 26.5%;
-    padding: 0 0.5rem;
-}
-
-.on-hand-qty-container .save-button {
-    width: 2rem;
-}
-
-.qty-input-button {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.on-hand-input {
-    width: 40%;
-}
-</style>

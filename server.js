@@ -2,7 +2,6 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const { PORT, mongoUri } = require('./config');
-const bodyParser = require('body-parser');
 const cors = require('cors');
 const morgan = require('morgan');
 const foodRoutes = require('./routes/api/foods');
@@ -11,7 +10,8 @@ const path = require('path');
 const app = express();
 
 app.use(express.static('public'));
-app.use(bodyParser.json());
+app.use(express.urlencoded({extended: true}));
+app.use(express.json())
 app.use(cors());
 app.use(morgan('tiny'));
 
