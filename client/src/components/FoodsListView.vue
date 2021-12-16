@@ -1,13 +1,14 @@
 <template>
     <div>
         <div class="food-item-container">
-            <div class="food-block" :key="food.id" v-for="food in foodsData">
+            <div class="food-block" v-for="food in foodsData" :key="food.id">
                 <div class="tile is-ancestor">
                     <div class="tile is-parent">
                         <div class="tile is-child box">
                             <div id="food-name">{{ food.foodName }}</div>
                             <div id="food-img">
-                                <img :src="require(`../assets/images/food_inv/${food.imagePath}.png`)" :alt="food.foodName" :title="food.foodName" />
+                                {{ food.foodName }}
+                                <!-- <img :src="foodIcon()" :alt="food.foodName" :title="food.foodName" /> -->
                             </div>    
                         </div>
                     </div>
@@ -57,7 +58,9 @@
                                                 </div>
                                                 <div class="save-button">
                                                     <!-- <button class="button is-primary save-button" @click="test({ingredient_id: ingredient._id, onhandqty: ingredient.onHandQty})"><i class="material-icons">save</i></button> -->
-                                                    <button class="button is-primary save-button" @click="$emit('update-qtys', { ingredient_id: ingredient._id, ingredientName: ingredient.ingredientName, onhandqty: ingredient.onHandQty})"><i class="material-icons">save</i></button>
+                                                    <!-- <button class="button is-primary save-button" @click="$emit('update-qtys', { ingredient_id: ingredient._id, ingredientName: ingredient.ingredientName, onhandqty: ingredient.onHandQty})"><i class="material-icons">save</i></button> -->
+                                                    <button class="button is-primary save-button"><i class="material-icons">save</i></button>
+                                                    <!-- @click="updateQtys({ ingredient_id: ingredient._id, ingredientName: ingredient.ingredientName, onhandqty: ingredient.onHandQty})" -->
                                                 </div>
                                             </li>
                                         </ul>
@@ -76,11 +79,22 @@
 
 <script>
 // import ImageRef from './ImageRef.vue'
+
+import axios from "axios"
+import { toast } from 'bulma-toast'
+
 export default {
-  components: { 
-    //   ImageRef 
+    components: { 
+        //ImageRef 
     },
-    props: ['foodsData'],
+    mounted() {
+        this.$store.dispatch('foods/retrieveFoods')
+    },
+    computed: {
+        foodsData() {
+            return this.$store.state.foods
+        }
+    },
     methods: {
         requiredOnHand: function(value) {
             if(value < 20) {
@@ -89,8 +103,26 @@ export default {
                 return 0;
             }
         },
-        test: function(Id) {
-            console.log(Id);
+        updateQtys: async function(objects) {
+            try {
+                const response = await axios.patch('api/foods/' + objects.ingredient_id, {
+                onHandQty : objects.onhandqty,
+                ingredientName: objects.ingredientName
+                });
+                // console.log(`\nFood ID: ${objects.food_id} \nOn Hand Qty passed: ${objects.onhandqty} \nIngredient ID: ${objects.ingredient_id}`);
+                toast({
+                message: 'Successfully updated ' + objects.ingredientName + ' quantity',
+                type: 'is-info',
+                position: "top-center",
+                dismissible: true,
+                pauseOnHover: true,
+                closeOnClick: true
+                })
+                console.log(response.data)
+                this.randomKey++
+            } catch (error) {
+                console.log(error)
+            }
         }
     }
 }

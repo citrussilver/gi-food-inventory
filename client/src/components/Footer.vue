@@ -2,7 +2,7 @@
   <footer class="footer footerspan">
       <div class="content has-text-centered">
         <p>2020, 2021 Genshin Foods List</p>
-        <p>by Hisokage</p>
+        <p>by CitrusIce<sup>3</sup> </p>
       </div>
     </footer>
 </template>
