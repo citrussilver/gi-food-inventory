@@ -12,7 +12,14 @@ const app = express();
 app.use(express.static('public'));
 app.use(express.urlencoded({extended: true}));
 app.use(express.json())
-app.use(cors());
+
+let corsOpts = {
+  origin: '*',
+  methods: ['GET', 'POST'],
+  allowedHeaders: ['Content-Type'],
+}
+
+app.use(cors(corsOpts));
 app.use(morgan('tiny'));
 
 const port = process.env.PORT || 9000;
