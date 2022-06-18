@@ -3,7 +3,7 @@
     --dark-item-bg: #323232;
     --dark-background: #252526;
     --white-text: #fff;
-    --hover-color: #007acc;
+    --hover-color: var(--hover-color);
 }
 
 body {
@@ -15,6 +15,17 @@ body {
     padding: 1rem;
 }
 
+.flex {
+    display: flex;
+}
+
+.justify-between {
+    justify-content: space-between;
+}
+
+.items-center {
+    align-items: center; 
+}
 
 .tile {
     background: var(--dark-item-bg);
@@ -39,14 +50,18 @@ body {
     text-align: center;
 }
 
-.tile #food-name {
+.tile .food-name {
     text-align: center;
     font-size: 20px;
     padding: 0.5rem;
 }
 
-.tile #food-img {
+.tile .food-img {
     text-align: center;
+}
+
+.food-img img {
+    border-radius: 50%;
 }
 
 .food-item-container {
@@ -63,8 +78,30 @@ body {
     margin: 4rem auto;
     padding: 2rem;
     border-radius: 3px;
-    box-shadow: 0 2px 0 rgba(230, 145, 56, 0.05), 0 5px 20px rgba(230, 145, 56, 0.5);
+    box-shadow: 0 5px 20px rgba(230, 145, 56, 0.05), 0 5px 20px rgba(230, 145, 56, 0.5);
     transition: all 100ms ease-in-out;
+}
+
+.save-block {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.save-block button {
+    position: absolute;
+    top: 14vh;
+    z-index: 2;
+    left: 92%;
+}
+
+.button.is-primary.save-block-btn {
+    /* background-color: rgba(0, 209, 178, 2%); */
+    border-radius: 50%;
+}
+.button.is-primary.save-block-btn:hover, .button.is-primary.save-button:hover {
+    background-color: rgba(230, 145, 56, 1);
 }
 
 .food-block:hover {
@@ -74,7 +111,6 @@ body {
 #txtarea-custom {
     background: var(--dark-item-bg);
     color: var(--white-text);
-    cursor: pointer;
 }
 
 .ingredients-block {
@@ -97,36 +133,86 @@ body {
     flex-direction: row;
 }
 
-.ingredients-list .grid-row:hover {
-    background-color: var(--hover-color);
+.flex-list {
+    display: flex;
+    justify-content: space-between;
+    border-style: dotted;
+    border-color: rgba(230, 145, 56, 0.1);
+    border-radius: 0.75rem;
+    padding: 0.5rem;
+    margin: 0.5rem 0;
+}
+
+.flex-list:hover {
+    background-color: rgba(22, 114, 249, 50%);
 }
 
 .grid-row {
     display: grid;
     grid-template-columns: 20% 30% 30% 20%;
     border-style: dotted;
-
     border-color: rgba(230, 145, 56, 0.1);
+    border-radius: 0.75rem;
 }
 
-.on-hand-qty-container .on-hand-input {
-    width: 5rem;
+.food-on-hand-qty-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
-/* .row #ingredient-image-container {
-    flex: 5%;
-    display: grid;
+
+.food-on-hand-input {
+    -moz-appearance: textfield;
+    appearance: textfield;
+    padding: 0;
+    background-color: inherit;
+    color: #fff;
+    font-size: 2.2rem;
+    max-width: 3rem;
+    max-width: 7.5rem;
+    text-align: center;
 }
 
-.row .required-qty-container {
-    flex: 5%; 
-} */
+.misc-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
 
-/* .ingredient-image {
-    display: grid;
-    place-content: center;
-} */
 
-.ingredient-image, .ingredient-name, .on-hand-qty-container, .save-button {
-    display: grid;
-    place-content: center;
+.ingredient-on-hand-input {
+    max-width: 5rem;
+}
+
+.ingredient-image, .ingredient-name, .on-hand-qty-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ingredient-image img {
+    border-radius: 20%;
+}
+
+.button {
+    max-width: 2.5rem;
+}
+
+@media only screen and (max-width: 740px) {
+
+    .save-block button {
+        position: absolute;
+        top: 47vh;
+        left: 70%;
+        padding: 2rem;
+    }
+
+    .button.is-primary.save-block-btn {
+        background-color: rgba(0, 209, 178, 2%);
+    }
+    .button.is-primary.save-block-btn:hover {
+        background-color: #00d1b2;
+    }
 }
