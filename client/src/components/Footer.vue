@@ -1,8 +1,8 @@
 <template>
   <footer class="footer footerspan">
       <div class="content has-text-centered">
-        <p>2020, 2021 Genshin Foods List</p>
-        <p>by CitrusIce<sup>3</sup> </p>
+        <p id="footer-desc">2022 Genshin Food Ingredients Tracker</p>
+        <p>by DrunkIce<sup>3</sup> </p>
       </div>
     </footer>
 </template>
@@ -16,5 +16,18 @@ export default {
 <style scoped>
 .footerspan {
   background-color: #363636;
+}
+
+#footer-desc {
+  position: relative;
+}
+
+#footer-desc::after {
+  content: 'powered by Vue, Node.js and MongoDB';
+  position: absolute;
+  left: 50%;
+  top: 1.5rem;
+  transform: translate(-50%, 0%);
+  font-size: 0.6rem;
 }
 </style>
