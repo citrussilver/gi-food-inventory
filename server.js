@@ -35,12 +35,12 @@ mongoose.connect(mongoUri, {
 
 app.use(foodRoutes);
 
-// if (process.env.NODE_ENV === 'production') {
-//   app.use(express.static('client/dist'))
-//   app.get('*', (req, res) => {
-//       res.sendFile(path.resolve(__dirname, 'client', 'dist', 'index.html'))
-//   })
-// }
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static('client/dist'))
+  app.get('*', (req, res) => {
+      res.sendFile(path.resolve(__dirname, 'client', 'dist', 'index.html'))
+  })
+}
 
 app.listen(port, function() {
     console.log(`Server started on port ${port}`);
