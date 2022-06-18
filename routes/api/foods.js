@@ -4,18 +4,18 @@ const IngredientItem = require('../../models/Ingredient');
 
 const router = Router()
 
-router.get('/', async(req, res) =>{
-    try {
-        const food = await FoodItem.find() 
-            .populate('ingredients')
-            .exec();
-        res.status(200).json(food);
-    } catch (error) {
-        res.status(500).json({ message: error.message })
-    }
-});
+// router.get('/', async(req, res) =>{
+//     try {
+//         const food = await FoodItem.find() 
+//             .populate('ingredients')
+//             .exec();
+//         res.status(200).json(food);
+//     } catch (error) {
+//         res.status(500).json({ message: error.message })
+//     }
+// });
 
-router.get('/api/foods', async(req, res) =>{
+router.get('/api/foodslist', async(req, res) =>{
     try {
         const food = await FoodItem.find() 
             .populate('ingredients')

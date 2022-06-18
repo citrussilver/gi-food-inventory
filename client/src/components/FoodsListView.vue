@@ -93,9 +93,6 @@ import { mapState } from 'vuex';
 import { toast } from 'bulma-toast'
 
 export default {
-    components: { 
-
-    },
     mounted() {
         this.$store.dispatch('foods/retrieveFoods')
     },
