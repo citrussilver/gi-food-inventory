@@ -30,17 +30,17 @@ mongoose.connect(mongoUri, {
   useUnifiedTopology: true,
   useFindAndModify: false
 })
-.then(() => console.log('MongoDB database connected.'))
+.then(() => console.log('MongoDB Atlas online connected.'))
 .catch((err) => console.log(err))
 
-app.use('/api/foods', foodRoutes);
+app.use(foodRoutes);
 
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static('client/dist'))
-  app.get('*', (req, res) => {
-      res.sendFile(path.resolve(__dirname, 'client', 'dist', 'index.html'))
-  })
-}
+// if (process.env.NODE_ENV === 'production') {
+//   app.use(express.static('client/dist'))
+//   app.get('*', (req, res) => {
+//       res.sendFile(path.resolve(__dirname, 'client', 'dist', 'index.html'))
+//   })
+// }
 
 app.listen(port, function() {
     console.log(`Server started on port ${port}`);

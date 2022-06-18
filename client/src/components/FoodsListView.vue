@@ -1,24 +1,35 @@
 <template>
     <div>
         <div class="food-item-container">
-            <div class="food-block" v-for="food in foodsData" :key="food.id">
+            <div class="food-block" v-for="food in foods" :key="food.id">
+                <div class="save-block">
+                    <button 
+                        class="button is-primary save-block-btn"
+                        @click="updateFoodQty({
+                            food_id: food._id, 
+                            foodName: food.foodName, 
+                            onHandQty: food.onHandQty
+                        })"
+                    >
+                        <i class="material-icons">save</i>
+                    </button>
+                </div>
                 <div class="tile is-ancestor">
                     <div class="tile is-parent">
                         <div class="tile is-child box">
-                            <div id="food-name">{{ food.foodName }}</div>
-                            <div id="food-img">
-                                {{ food.foodName }}
-                                <!-- <img :src="foodIcon()" :alt="food.foodName" :title="food.foodName" /> -->
-                            </div>    
+                            <div class="food-name">{{ food.foodName }}</div>
+                            <div class="food-img">
+                               <img :src="food.imageUrl" :alt="food.foodName" :title="food.foodName" />
+                            </div>
                         </div>
                     </div>
                     <div class="tile is-4 is-vertical is-parent">
-                        <div class="tile is-child box">
+                        <div class="tile is-child box food-on-hand-qty-container">
                             <p class="count-label">On Hand:</p>
-                            <p class="count-figure">{{ food.onHandQty }}</p>
-                            <!-- <input class="input is-primary on-hand-input" type="number" min="0" v-model="food.onHandQty"> -->
+                            <!-- <p class="count-figure">{{ food.onHandQty }}</p> -->
+                            <input class="input is-primary food-on-hand-input" type="number" min="0" v-model="food.onHandQty">
                         </div>
-                        <div class="tile is-child box">
+                        <div class="tile is-child box misc-info">
                             <p class="count-label">Deficit:</p>
                             <p class="count-figure">{{ requiredOnHand(food.onHandQty) }}</p>
                         </div>
@@ -42,9 +53,9 @@
                                     <div class="ingredients-block">
                                         <p>Ingredients List:</p>
                                         <ul class="ingredients-list">
-                                            <li class="grid-row" v-for="ingredient in food.ingredients" :key="ingredient._id">
-                                                <div id="ingredient-image">
-                                                    <img class="image is-64x64" :src="require(`../assets/images/food_inv/${ingredient.imagePath}.png`)" alt="ingredient.ingredientName" :title="ingredient.ingredientName">
+                                            <li class="flex-list" v-for="ingredient in food.ingredients" :key="ingredient._id">
+                                                <div class="ingredient-image">
+                                                    <img class="image is-64x64" :src="ingredient.imageUrl" :alt="ingredient.ingredientName" :title="ingredient.ingredientName">
                                                 </div>
                                                 <div class="ingredient-name">
                                                     <!-- <i class="material-icons" id="required-inner-qty">food_bank</i> -->
@@ -53,14 +64,16 @@
                                                     {{ingredient.ingredientName}}
                                                 </div>
                                                 <div class="on-hand-qty-container">
-                                                    <input v-if="ingredient.onHandQty < 1" class="input is-danger on-hand-input" type="number" v-model="ingredient.onHandQty" min="0">
-                                                    <input v-else class="input is-primary on-hand-input" type="number" v-model="ingredient.onHandQty" min="0">
-                                                </div>
-                                                <div class="save-button">
-                                                    <!-- <button class="button is-primary save-button" @click="test({ingredient_id: ingredient._id, onhandqty: ingredient.onHandQty})"><i class="material-icons">save</i></button> -->
-                                                    <!-- <button class="button is-primary save-button" @click="$emit('update-qtys', { ingredient_id: ingredient._id, ingredientName: ingredient.ingredientName, onhandqty: ingredient.onHandQty})"><i class="material-icons">save</i></button> -->
-                                                    <button class="button is-primary save-button"><i class="material-icons">save</i></button>
-                                                    <!-- @click="updateQtys({ ingredient_id: ingredient._id, ingredientName: ingredient.ingredientName, onhandqty: ingredient.onHandQty})" -->
+                                                    <input v-if="ingredient.onHandQty < 1" class="input is-danger ingredient-on-hand-input" type="number" v-model="ingredient.onHandQty" min="0">
+                                                    <input v-else class="input is-primary ingredient-on-hand-input" type="number" v-model="ingredient.onHandQty" min="0">
+                                                    <button 
+                                                        class="button is-primary save-button"
+                                                        @click="updateIngredientQtys({
+                                                            ingredient_id: ingredient._id, 
+                                                            ingredientName: ingredient.ingredientName, 
+                                                            onHandQty: ingredient.onHandQty
+                                                        })"
+                                                    ><i class="material-icons">save</i></button>
                                                 </div>
                                             </li>
                                         </ul>
@@ -70,30 +83,24 @@
                         </div>
                     </div>
                 </div>
-                <!-- <button class="button is-primary" @click="$emit('update-qtys', [food, food.id])">Save Changes</button> -->
-                <!-- <button class="button is-primary" @click="test(ingredient._id)">Save Changes</button> -->
             </div>
         </div>
     </div>  
 </template>
 
 <script>
-// import ImageRef from './ImageRef.vue'
-
-import axios from "axios"
+import { mapState } from 'vuex';
 import { toast } from 'bulma-toast'
 
 export default {
     components: { 
-        //ImageRef 
+
     },
     mounted() {
         this.$store.dispatch('foods/retrieveFoods')
     },
     computed: {
-        foodsData() {
-            return this.$store.state.foods
-        }
+        ...mapState('foods', ['foods']),
     },
     methods: {
         requiredOnHand: function(value) {
@@ -103,26 +110,65 @@ export default {
                 return 0;
             }
         },
-        updateQtys: async function(objects) {
-            try {
-                const response = await axios.patch('api/foods/' + objects.ingredient_id, {
-                onHandQty : objects.onhandqty,
-                ingredientName: objects.ingredientName
-                });
-                // console.log(`\nFood ID: ${objects.food_id} \nOn Hand Qty passed: ${objects.onhandqty} \nIngredient ID: ${objects.ingredient_id}`);
+        updateFoodQty: async function(foodData) {
+
+            await this.$store.dispatch('foods/updateFoodOnHandQtys', {
+                food_id: foodData.food_id,
+                foodName: foodData.foodName,
+                onHandQty: foodData.onHandQty,
+            }).then(res => {
+                console.log(res)
                 toast({
-                message: 'Successfully updated ' + objects.ingredientName + ' quantity',
-                type: 'is-info',
-                position: "top-center",
-                dismissible: true,
-                pauseOnHover: true,
-                closeOnClick: true
+                    message: res,
+                    type: 'is-info',
+                    position: "top-center",
+                    dismissible: true,
+                    pauseOnHover: true,
+                    closeOnClick: true
                 })
-                console.log(response.data)
-                this.randomKey++
-            } catch (error) {
-                console.log(error)
-            }
+                this.$store.dispatch('foods/retrieveFoods')
+            }).catch(err => {
+                console.log(err)
+                toast({
+                    message: `Encountered an error. ${err}`,
+                    type: 'is-danger',
+                    position: "top-center",
+                    dismissible: true,
+                    pauseOnHover: true,
+                    closeOnClick: true
+                })
+            })
+
+        },
+        updateIngredientQtys: async function(ingredientData) {
+            
+            await this.$store.dispatch('foods/updateIngredientOnHandQtys', {
+                ingredient_id: ingredientData.ingredient_id,
+                ingredientName: ingredientData.ingredientName,
+                onHandQty: ingredientData.onHandQty,
+            }).then(res => {
+                console.log(res)
+                toast({
+                    message: res,
+                    type: 'is-info',
+                    position: "top-center",
+                    dismissible: true,
+                    pauseOnHover: true,
+                    closeOnClick: true
+                })
+                this.$store.dispatch('foods/retrieveFoods')
+            }).catch(err => {
+                console.log(err)
+                toast({
+                    message: `Encountered an error. ${err}`,
+                    type: 'is-danger',
+                    position: "top-center",
+                    dismissible: true,
+                    pauseOnHover: true,
+                    closeOnClick: true
+                })
+            })
+            
         }
     }
 }
