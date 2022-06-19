@@ -1,5 +1,5 @@
 import axios from "axios"
-const BASE_URL = 'http://localhost:9000';
+//const BASE_URL = 'http://localhost:9000';
 
 const foods = {
     namespaced: true,
@@ -18,7 +18,7 @@ const foods = {
     actions: {
         async retrieveFoods({ commit }) {
 
-            await axios.get(`${BASE_URL}/api/foods`)
+            await axios.get('/api/foodslist')
             .then(response => {
                 commit('SET_FOODS', response.data)
             })
@@ -57,7 +57,9 @@ const foods = {
         }
     },
     getters: {
-        allFoods : state => state.foods
+        calcCraftableQty(state) {
+            return state.foods[0].onHandQty
+        }
     }
 }
 

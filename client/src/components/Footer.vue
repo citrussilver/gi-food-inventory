@@ -28,6 +28,6 @@ export default {
   left: 50%;
   top: 1.5rem;
   transform: translate(-50%, 0%);
-  font-size: 0.6rem;
+  font-size: 0.5rem;
 }
 </style>
