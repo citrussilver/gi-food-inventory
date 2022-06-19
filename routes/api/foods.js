@@ -17,8 +17,8 @@ const router = Router()
 
 router.get('/api/foodslist', async(req, res) =>{
     try {
-        const food = await FoodItem.find() 
-            .populate('ingredients')
+        const food = await FoodItem.find()
+            .populate('ingredients.ingredientDetail')
             .exec();
         res.status(200).json(food);
     } catch (error) {

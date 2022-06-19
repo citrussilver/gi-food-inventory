@@ -57,7 +57,9 @@ const foods = {
         }
     },
     getters: {
-        allFoods : state => state.foods
+        calcCraftableQty(state) {
+            return state.foods[0].onHandQty
+        }
     }
 }
 

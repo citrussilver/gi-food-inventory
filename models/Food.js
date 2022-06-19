@@ -7,8 +7,11 @@ const foodSchema = new mongoose.Schema(
         effect: String,
         onHandQty: Number,
         ingredients:  [{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Ingredient'
+            ingredientDetail: [{
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Ingredient'
+            }],
+            requiredQty: Number
         }]
     }
 );
